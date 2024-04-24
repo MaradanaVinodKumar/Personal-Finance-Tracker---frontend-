@@ -1,10 +1,55 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native'
 import logo from "../../assets/splashScreen/logo.png"
 import { useNavigation } from '@react-navigation/native';
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function RegistrationScreen() {
     const navigator = useNavigation();
+    const [getInput, SetInput] = useState(["", "", "", ""]);
+    const [getInputValidates, SetInputValidates] = useState([true, true, true, true]);
+    const handleInputChanges = (value, index) => {
+        const values = getInput;
+        values[index] = value;
+        SetInput(values);
+    }
+    const setInputValidation = (index, validate) => {
+        SetInputValidates((InputValidates) => {
+            InputValidates[index] = validate;
+            return InputValidates;
+        });
+    }
+
+    const handleNext = () => {
+
+        const validations = getInput.every((value, index) => {
+            if (index == 2) {
+                if ((value > 18) && (value < 100)) {
+                    console.log(true);
+                    return true;
+                }
+                else {
+                    console.log(false);
+                    return false;
+                }
+            }
+            else if ((value != "") && (value != "undefined")) {
+                console.log(true);
+
+                return true;
+            }
+            else {
+                console.log(false);
+                return false;
+            }
+        })
+
+        if (validations) {
+            //navigate
+        }
+        else {
+            console.log(getInputValidates)
+        }
+    }
     return (
         <View style={styles.RegistrationScreenContainer}>
             <View style={styles.logoBackground}>
@@ -17,31 +62,35 @@ export default function RegistrationScreen() {
                     <Text style={styles.lable}>First Name</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={styles.input} />
+                    <TextInput style={[styles.input, { borderColor: getInputValidates[0] ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[0]} onChangeText={(value) => { handleInputChanges(value, 0) }} />
                 </View>
                 <View>
                     <Text style={styles.lable}>Last Name</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={styles.input} />
+                    <TextInput style={[styles.input, { borderColor: getInputValidates[1] ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[1]} onChangeText={(value) => { handleInputChanges(value, 1) }} />
                 </View>
                 <View>
                     <Text style={styles.lable}>Age</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={styles.input} keyboardType='number-pad' />
+                    <TextInput style={[styles.input, { borderColor: getInputValidates[2] ? "#00A82F" : "red" }]} keyboardType='number-pad' maxLength={2} autoCorrect={false} defaultValue={getInput[2]} onChangeText={(value) => { handleInputChanges(value, 2) }} />
                 </View>
                 <View>
                     <Text style={styles.lable}>Occupation</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={styles.input} />
+                    <TextInput style={[styles.input, { borderColor: getInputValidates[3] ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[3]} onChangeText={(value) => { handleInputChanges(value, 3) }} />
+                </View>
+                <View style={{ marginTop: "5%", width: "84%", alignItems: "flex-end" }}>
+                    <TouchableOpacity onPress={() => { handleNext() }}><Text style={styles.SignUpBtn}>Next</Text></TouchableOpacity>
                 </View>
             </View>
             <View style={styles.SingUpBg}>
                 <Text style={styles.SignUpText}>If you have already account. </Text>
                 <TouchableOpacity onPress={() => { navigator.navigate("Login") }}><Text style={styles.SignUpBtn}>Sign In</Text></TouchableOpacity>
             </View>
+
         </View>
     )
 }
@@ -80,11 +129,12 @@ const styles = StyleSheet.create({
 
     }, input: {
         borderBottomWidth: 2,
-        borderColor: "#00A82F",
+        // borderColor: "#00A82F",
         width: "90%",
         fontSize: 25,
         marginLeft: "30%",
-        color: "#000000"
+        color: "#000000",
+        paddingLeft: 5
     }, SingUpBg: {
         marginTop: "43%",
         bottom: 10,

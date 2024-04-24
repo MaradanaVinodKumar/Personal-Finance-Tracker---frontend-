@@ -11,6 +11,7 @@ export default function StackNavigation() {
             <Stack.Screen name="splash" component={SplashScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="EmailOtpVerfication" component={RegistrationScreen} options={{ headerShown: true }} />
         </Stack.Navigator>
     )
 }
