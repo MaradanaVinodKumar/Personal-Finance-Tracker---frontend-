@@ -43,6 +43,15 @@ export default function RegistrationScreen() {
             }
         })
 
+        getInput.forEach((value, index) => {
+            if (value != "") {
+                setInputValidation(index, true);
+            }
+            else {
+                setInputValidation(index, false);
+            }
+        })
+
         if (validations) {
             //navigate
         }
