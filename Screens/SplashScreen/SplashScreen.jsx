@@ -1,25 +1,33 @@
-import { ActivityIndicator, Dimensions, Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import { ActivityIndicator, Dimensions, Image, ImageBackground, StyleSheet, Text, View, StatusBar } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import backgroundImage from "../../assets/splashScreen/background.png"
 import logo from "../../assets/splashScreen/logo.png"
-import { useNavigation } from '@react-navigation/native';
+import LoginScreen from '../LoginScreen/LoginScreen';
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("screen").height;
 
 export default function SplashScreen() {
 
-    const navigater = useNavigation();
+    const [direction, setDirection] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
-            navigater.navigate("Login");
-        }, 2000);
+            setDirection(true);
+        }, 1000);
 
     }, [])
 
+
+    if (direction) {
+        return (
+            <LoginScreen />
+        )
+    }
+
     return (
         <View style={styles.SplashScreenContiner}>
+            <StatusBar backgroundColor='#ffffff' />
             <ImageBackground source={backgroundImage} style={styles.backgroundImage} />
             <View style={styles.logoBackground}>
                 <Image source={logo} style={styles.logos} />
@@ -34,7 +42,7 @@ const styles = StyleSheet.create({
 
     SplashScreenContiner: {
         flex: 1,
-        backgroundColor: "#DFFDE6",
+        backgroundColor: "#ffffff",
     },
     backgroundImage: {
         height: height,
