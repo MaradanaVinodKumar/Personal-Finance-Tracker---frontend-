@@ -43,7 +43,7 @@ export default function LoginScreen() {
             </View>
             <View style={styles.FieldBackground}>
                 <View>
-                    <Text style={styles.lable}>Enter phone number or e-mail</Text>
+                    <Text style={styles.lable}>Enter E-mail</Text>
                 </View>
                 <View style={{ flexDirection: "row", width: "100%", justifyContent: "center", marginLeft: "4%" }}>
                     <View style={{ marginRight: 10 }}>

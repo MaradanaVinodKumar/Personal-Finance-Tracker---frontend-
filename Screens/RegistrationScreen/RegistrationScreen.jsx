@@ -6,17 +6,35 @@ import React, { useState } from 'react'
 export default function RegistrationScreen() {
     const navigator = useNavigation();
     const [getInput, SetInput] = useState(["", "", "", ""]);
-    const [getInputValidates, SetInputValidates] = useState([true, true, true, true]);
+    const [firstNameValidation, setFirstNameValidation] = useState(true);
+    const [LastNameValidation, setLastNameValidation] = useState(true);
+    const [ageValidation, setAgeValidation] = useState(true);
+    const [occupationValidation, setOccupationValidation] = useState(true);
+
     const handleInputChanges = (value, index) => {
         const values = getInput;
         values[index] = value;
         SetInput(values);
-    }
-    const setInputValidation = (index, validate) => {
-        SetInputValidates((InputValidates) => {
-            InputValidates[index] = validate;
-            return InputValidates;
-        });
+        if (index != 2) {
+
+            if ((value != "") && (value != "undefined")) {
+                switch (index) {
+                    case 0: setFirstNameValidation(true); break;
+                    case 1: setLastNameValidation(true); break;
+                    case 3: setOccupationValidation(true); break;
+                    default: break;
+                }
+            }
+        }
+        else {
+            if ((value > 18) && (value < 100)) {
+                setAgeValidation(true);
+            }
+            else {
+                setAgeValidation(false);
+            }
+        }
+
     }
 
     const handleNext = () => {
@@ -25,38 +43,50 @@ export default function RegistrationScreen() {
             if (index == 2) {
                 if ((value > 18) && (value < 100)) {
                     console.log(true);
+                    setAgeValidation(true);
                     return true;
                 }
                 else {
                     console.log(false);
+                    setAgeValidation(false);
                     return false;
                 }
             }
             else if ((value != "") && (value != "undefined")) {
                 console.log(true);
 
+                switch (index) {
+                    case 0: setFirstNameValidation(true); break;
+                    case 1: setLastNameValidation(true); break;
+                    case 3: setOccupationValidation(true); break;
+                    default: break;
+                }
+
                 return true;
             }
             else {
                 console.log(false);
+
+                switch (index) {
+                    case 0: setFirstNameValidation(false); break;
+                    case 1: setFirstNameValidation(false); break;
+                    case 3: setOccupationValidation(false); break;
+                    default: break;
+                }
                 return false;
             }
         })
 
-        getInput.forEach((value, index) => {
-            if (value != "") {
-                setInputValidation(index, true);
-            }
-            else {
-                setInputValidation(index, false);
-            }
-        })
-
-        if (validations) {
-            //navigate
+        if ((getInput[0].length > 0) && (getInput[0] != "undefined")) {
+            setFirstNameValidation(true);
         }
         else {
-            console.log(getInputValidates)
+            setFirstNameValidation(false);
+
+        }
+
+        if (validations) {
+            navigator.navigate("EmailOtpVerfication");
         }
     }
     return (
@@ -71,25 +101,25 @@ export default function RegistrationScreen() {
                     <Text style={styles.lable}>First Name</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={[styles.input, { borderColor: getInputValidates[0] ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[0]} onChangeText={(value) => { handleInputChanges(value, 0) }} />
+                    <TextInput style={{ borderColor: firstNameValidation ? "#00A82F" : "red", ...styles.input }} autoCorrect={false} defaultValue={getInput[0]} onChangeText={(value) => { handleInputChanges(value, 0) }} />
                 </View>
                 <View>
                     <Text style={styles.lable}>Last Name</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={[styles.input, { borderColor: getInputValidates[1] ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[1]} onChangeText={(value) => { handleInputChanges(value, 1) }} />
+                    <TextInput style={[styles.input, { borderColor: LastNameValidation ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[1]} onChangeText={(value) => { handleInputChanges(value, 1) }} />
                 </View>
                 <View>
                     <Text style={styles.lable}>Age</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={[styles.input, { borderColor: getInputValidates[2] ? "#00A82F" : "red" }]} keyboardType='number-pad' maxLength={2} autoCorrect={false} defaultValue={getInput[2]} onChangeText={(value) => { handleInputChanges(value, 2) }} />
+                    <TextInput style={[styles.input, { borderColor: ageValidation ? "#00A82F" : "red" }]} keyboardType='number-pad' maxLength={2} autoCorrect={false} defaultValue={getInput[2]} onChangeText={(value) => { handleInputChanges(value, 2) }} />
                 </View>
                 <View>
                     <Text style={styles.lable}>Occupation</Text>
                 </View>
                 <View style={{ width: "70%", }}>
-                    <TextInput style={[styles.input, { borderColor: getInputValidates[3] ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[3]} onChangeText={(value) => { handleInputChanges(value, 3) }} />
+                    <TextInput style={[styles.input, { borderColor: occupationValidation ? "#00A82F" : "red" }]} autoCorrect={false} defaultValue={getInput[3]} onChangeText={(value) => { handleInputChanges(value, 3) }} />
                 </View>
                 <View style={{ marginTop: "5%", width: "84%", alignItems: "flex-end" }}>
                     <TouchableOpacity onPress={() => { handleNext() }}><Text style={styles.SignUpBtn}>Next</Text></TouchableOpacity>
